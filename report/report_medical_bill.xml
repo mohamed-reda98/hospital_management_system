@@ -45,7 +45,7 @@
                     <tbody>
                         <t t-foreach="doc.line_ids" t-as="line">
                             <tr>
-                                <td style="padding: 8px; border: 1px solid #ccc;text-align: right;"><t t-esc="line.medicine_id.name"/></td>
+                                <td style="padding: 8px; border: 1px solid #ccc;text-align: right;"><t t-esc="line.product_id.name"/></td>
                                 <!--td style="padding: 8px; border: 1px solid #ccc;">Medicine prescribed</td-->
                                 <td style="padding: 8px; border: 1px solid #ccc;text-align: center;"><t t-esc="line.quantity"/></td>
                                 <td style="padding: 8px; border: 1px solid #ccc;text-align: center;">₹ <t t-esc="line.cost"/></td>

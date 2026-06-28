@@ -6,12 +6,12 @@ class MedicalBillLine(models.Model):
 
     bill_id = fields.Many2one('medical.bill', string='Bill')
 
-    medicine_id = fields.Many2one(
-        'medicine.master',
-        string='Medicine',
+    product_id = fields.Many2one(
+        'product.template',
+        string='Item',
         required=True,
         ondelete='restrict',
-        help='Select or create a medicine'
+        help='Select an item'
     )
 
     cost = fields.Float(string='Cost')
@@ -23,12 +23,7 @@ class MedicalBillLine(models.Model):
         for line in self:
             line.subtotal = line.cost * line.quantity
 
-    @api.onchange('medicine_id')
-    def _onchange_medicine_id(self):
-        if self.medicine_id:
-            self.cost = self.medicine_id.cost  # Auto-fill cost from master
-
-    @api.onchange('cost')
-    def _onchange_cost(self):
-        if self.medicine_id and self.cost:
-            self.medicine_id.cost = self.cost  # Save cost to master
+    @api.onchange('product_id')
+    def _onchange_product_id(self):
+        if self.product_id:
+            self.cost = self.product_id.list_price  # Auto-fill cost from product

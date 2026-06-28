@@ -63,34 +63,35 @@ class Patient(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        contact_number = vals_list.get('contact_number')
-        if contact_number:
-            existing_patient = self.env['hospital.patient'].sudo().search([
-                ('contact_number', '=', contact_number)
-            ], limit=1)
-            if existing_patient:
-                raise ValidationError(
-                    f"A patient with contact number {contact_number} already exists: {existing_patient.name}.")
+        for vals in vals_list:
+            contact_number = vals.get('contact_number')
+            if contact_number:
+                existing_patient = self.env['hospital.patient'].sudo().search([
+                    ('contact_number', '=', contact_number)
+                ], limit=1)
+                if existing_patient:
+                    raise ValidationError(
+                        f"A patient with contact number {contact_number} already exists: {existing_patient.name}.")
 
-        if not vals_list.get('registration_date'):
-            vals_list['registration_date'] = fields.Datetime.now()
+            if not vals.get('registration_date'):
+                vals['registration_date'] = fields.Datetime.now()
 
-        sequence = self.env['ir.sequence'].sudo().search([('code', '=', 'hospital.patient')], limit=1)
-        if not sequence:
-            sequence = self.env['ir.sequence'].sudo().create({
-                'name': 'Patient ID',
-                'code': 'hospital.patient',
-                'prefix': 'PAT',
-                'padding': 4,
-                'number_next': 1,
-                'number_increment': 1,
-            })
+            sequence = self.env['ir.sequence'].sudo().search([('code', '=', 'hospital.patient')], limit=1)
+            if not sequence:
+                sequence = self.env['ir.sequence'].sudo().create({
+                    'name': 'Patient ID',
+                    'code': 'hospital.patient',
+                    'prefix': 'PAT',
+                    'padding': 4,
+                    'number_next': 1,
+                    'number_increment': 1,
+                })
 
-        if not self.env['hospital.patient'].sudo().search([]):
-            sequence.number_next = 1
+            if not self.env['hospital.patient'].sudo().search([]):
+                sequence.number_next = 1
 
-        if vals_list.get('patient_id', 'New') == 'New':
-            vals_list['patient_id'] = self.env['ir.sequence'].next_by_code('hospital.patient') or 'New'
+            if vals.get('patient_id', 'New') == 'New':
+                vals['patient_id'] = self.env['ir.sequence'].next_by_code('hospital.patient') or 'New'
 
         return super(Patient, self).create(vals_list)
 

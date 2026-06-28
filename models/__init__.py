@@ -24,6 +24,7 @@ from . import hospital_medicine_master
 # from . import urinetest
 # from . import rapiddiagnostictest
 from . import medicalbill
+from . import account_move
 from . import medicinemaster
 from . import medicalbill_line
 from . import reception_dashboard

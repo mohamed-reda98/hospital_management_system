@@ -20,7 +20,7 @@
                 <table class="table table-bordered mt-4">
                     <thead>
                         <tr>
-                            <th style="width: 40%;">Medicine</th>
+                            <th style="width: 40%;">Item</th>
                             <th style="text-align: right;">Cost</th>
                             <th style="text-align: right;">Quantity</th>
                             <th style="text-align: right;">Subtotal</th>
@@ -29,7 +29,7 @@
                     <tbody>
                         <t t-foreach="doc.line_ids" t-as="line">
                             <tr>
-                                <td><t t-esc="line.medicine_id.name"/></td>
+                                <td><t t-esc="line.product_id.name"/></td>
                                 <td style="text-align: right;"><t t-esc="line.cost"/></td>
                                 <td style="text-align: right;"><t t-esc="line.quantity"/></td>
                                 <td style="text-align: right;"><t t-esc="line.subtotal"/></td>
